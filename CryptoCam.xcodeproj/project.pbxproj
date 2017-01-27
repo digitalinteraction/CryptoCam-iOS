@@ -7,21 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		033540CF1E3B839400947EC3 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 033540CD1E3B839400947EC3 /* Model.xcdatamodeld */; };
+		033540D11E3B8C5400947EC3 /* VideoSelectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033540D01E3B8C5400947EC3 /* VideoSelectController.swift */; };
+		033540D31E3B8D0400947EC3 /* VideoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033540D21E3B8D0400947EC3 /* VideoController.swift */; };
 		039B6AA61DC69CF000FFA35B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039B6AA51DC69CF000FFA35B /* AppDelegate.swift */; };
-		039B6AA81DC69CF000FFA35B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039B6AA71DC69CF000FFA35B /* ViewController.swift */; };
+		039B6AA81DC69CF000FFA35B /* CamSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039B6AA71DC69CF000FFA35B /* CamSelect.swift */; };
 		039B6AAB1DC69CF000FFA35B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039B6AA91DC69CF000FFA35B /* Main.storyboard */; };
 		039B6AAD1DC69CF000FFA35B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 039B6AAC1DC69CF000FFA35B /* Assets.xcassets */; };
 		039B6AB01DC69CF000FFA35B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039B6AAE1DC69CF000FFA35B /* LaunchScreen.storyboard */; };
+		8F34664DBAD3BB70D86B40F4 /* Pods_CryptoCam.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE14C684A0F9589E3F500150 /* Pods_CryptoCam.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		033540CE1E3B839400947EC3 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		033540D01E3B8C5400947EC3 /* VideoSelectController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoSelectController.swift; sourceTree = "<group>"; };
+		033540D21E3B8D0400947EC3 /* VideoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoController.swift; sourceTree = "<group>"; };
 		039B6AA21DC69CF000FFA35B /* CryptoCam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoCam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		039B6AA51DC69CF000FFA35B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		039B6AA71DC69CF000FFA35B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		039B6AA71DC69CF000FFA35B /* CamSelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamSelect.swift; sourceTree = "<group>"; };
 		039B6AAA1DC69CF000FFA35B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		039B6AAC1DC69CF000FFA35B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		039B6AAF1DC69CF000FFA35B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		039B6AB11DC69CF000FFA35B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0BE6D7B306B48687E5D9DA45 /* Pods-CryptoCam.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptoCam.release.xcconfig"; path = "Pods/Target Support Files/Pods-CryptoCam/Pods-CryptoCam.release.xcconfig"; sourceTree = "<group>"; };
+		1958329F839AC03587CA11A8 /* Pods-CryptoCam.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptoCam.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CryptoCam/Pods-CryptoCam.debug.xcconfig"; sourceTree = "<group>"; };
+		DE14C684A0F9589E3F500150 /* Pods_CryptoCam.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CryptoCam.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F34664DBAD3BB70D86B40F4 /* Pods_CryptoCam.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +51,8 @@
 			children = (
 				039B6AA41DC69CF000FFA35B /* CryptoCam */,
 				039B6AA31DC69CF000FFA35B /* Products */,
+				EB892F13DFD3C904BD6380AE /* Pods */,
+				807CE524C5CFB88B5CCFD4C1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -55,13 +68,33 @@
 			isa = PBXGroup;
 			children = (
 				039B6AA51DC69CF000FFA35B /* AppDelegate.swift */,
-				039B6AA71DC69CF000FFA35B /* ViewController.swift */,
+				039B6AA71DC69CF000FFA35B /* CamSelect.swift */,
 				039B6AA91DC69CF000FFA35B /* Main.storyboard */,
 				039B6AAC1DC69CF000FFA35B /* Assets.xcassets */,
 				039B6AAE1DC69CF000FFA35B /* LaunchScreen.storyboard */,
 				039B6AB11DC69CF000FFA35B /* Info.plist */,
+				033540CD1E3B839400947EC3 /* Model.xcdatamodeld */,
+				033540D01E3B8C5400947EC3 /* VideoSelectController.swift */,
+				033540D21E3B8D0400947EC3 /* VideoController.swift */,
 			);
 			path = CryptoCam;
+			sourceTree = "<group>";
+		};
+		807CE524C5CFB88B5CCFD4C1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DE14C684A0F9589E3F500150 /* Pods_CryptoCam.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EB892F13DFD3C904BD6380AE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1958329F839AC03587CA11A8 /* Pods-CryptoCam.debug.xcconfig */,
+				0BE6D7B306B48687E5D9DA45 /* Pods-CryptoCam.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +104,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 039B6AB41DC69CF000FFA35B /* Build configuration list for PBXNativeTarget "CryptoCam" */;
 			buildPhases = (
+				86F85A1952DA8104F547BFCD /* [CP] Check Pods Manifest.lock */,
 				039B6A9E1DC69CF000FFA35B /* Sources */,
 				039B6A9F1DC69CF000FFA35B /* Frameworks */,
 				039B6AA01DC69CF000FFA35B /* Resources */,
+				CF995145951BB5ED1376C6DD /* [CP] Embed Pods Frameworks */,
+				A56DB4D0A5268CCC9EDEF57C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -91,11 +127,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Open Lab";
 				TargetAttributes = {
 					039B6AA11DC69CF000FFA35B = {
 						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = WF6EGE63BW;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -131,13 +168,64 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		86F85A1952DA8104F547BFCD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A56DB4D0A5268CCC9EDEF57C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CryptoCam/Pods-CryptoCam-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CF995145951BB5ED1376C6DD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CryptoCam/Pods-CryptoCam-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		039B6A9E1DC69CF000FFA35B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				039B6AA81DC69CF000FFA35B /* ViewController.swift in Sources */,
+				033540D31E3B8D0400947EC3 /* VideoController.swift in Sources */,
+				039B6AA81DC69CF000FFA35B /* CamSelect.swift in Sources */,
+				033540D11E3B8C5400947EC3 /* VideoSelectController.swift in Sources */,
 				039B6AA61DC69CF000FFA35B /* AppDelegate.swift in Sources */,
+				033540CF1E3B839400947EC3 /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,6 +269,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -230,6 +319,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -256,8 +346,10 @@
 		};
 		039B6AB51DC69CF000FFA35B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1958329F839AC03587CA11A8 /* Pods-CryptoCam.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = WF6EGE63BW;
 				INFOPLIST_FILE = CryptoCam/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = uk.ac.ncl.openlab.CryptoCam;
@@ -268,8 +360,10 @@
 		};
 		039B6AB61DC69CF000FFA35B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0BE6D7B306B48687E5D9DA45 /* Pods-CryptoCam.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = WF6EGE63BW;
 				INFOPLIST_FILE = CryptoCam/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = uk.ac.ncl.openlab.CryptoCam;
@@ -297,8 +391,22 @@
 				039B6AB61DC69CF000FFA35B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		033540CD1E3B839400947EC3 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				033540CE1E3B839400947EC3 /* Model.xcdatamodel */,
+			);
+			currentVersion = 033540CE1E3B839400947EC3 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 039B6A9A1DC69CF000FFA35B /* Project object */;
 }
