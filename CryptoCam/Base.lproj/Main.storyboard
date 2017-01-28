@@ -24,7 +24,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Root View Controller" id="5ff-mT-Rh8"/>
                     <connections>
-                        <segue destination="z8H-Uq-dg9" kind="show" id="ZBe-kS-BhA"/>
+                        <segue destination="z8H-Uq-dg9" kind="show" identifier="camSegue" id="ZBe-kS-BhA"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xn0-ic-Bca" userLabel="First Responder" sceneMemberID="firstResponder"/>

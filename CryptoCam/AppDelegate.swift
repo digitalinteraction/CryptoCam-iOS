@@ -12,7 +12,7 @@ import CoreBluetooth
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate, CBPeripheralManagerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate, CBPeripheralManagerDelegate, CBPeripheralDelegate {
     private static let KeyServiceUuid = CBUUID(string: "cc92cc92-ca19-0000-0000-000000000001")
     private static let KeyCharacUuid = CBUUID(string: "cc92cc92-ca19-0000-0000-000000000002")
     
@@ -20,13 +20,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
     private var peripheralManger:CBPeripheralManager?
     private var currentCCs = [(Cam, CBPeripheral, Date)]()
     
+    private var keyTimer:Timer?
+    
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        // Start Looking for Cameras
         centralManager = CBCentralManager(delegate: self, queue: nil)
         peripheralManger = CBPeripheralManager(delegate: self, queue: nil)
+        
+        // Start Collecting Keys
+        startCollectingKeys()
         return true
     }
 
@@ -142,13 +148,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
             }
         
             currentCCs.append((cam!, peripheral, Date()))
-            peripheral.discoverServices([AppDelegate.KeyServiceUuid])
-        } catch {
-            print("Unable to create cam.")
+            central.connect(peripheral, options: nil)
+        } catch let camError {
+            print("Unable to create cam: \(camError)")
         }
     }
     
-    func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
+    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        peripheral.delegate = self
+        peripheral.discoverServices([AppDelegate.KeyServiceUuid])
+    }
+    
+    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        currentCCs = currentCCs.filter { $0.1.identifier != peripheral.identifier }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         if let services = peripheral.services {
             let service = services.filter{ $0.uuid == AppDelegate.KeyServiceUuid }.first
             
@@ -158,28 +173,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
         }
     }
     
-    func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         if let keyCharac = service.characteristics?.filter({$0.uuid == AppDelegate.KeyCharacUuid}).first {
             peripheral.readValue(for: keyCharac)
         }
     }
     
-    func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         do {
             var cam = currentCCs.filter{ $0.0.id == peripheral.identifier.uuidString }.first!
+            let data = characteristic.value!
             
-            let json = try JSONSerialization.jsonObject(with: characteristic.value!, options: .allowFragments) as! [String: AnyObject]
+            let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
             let video = Video(entity: NSEntityDescription.entity(forEntityName: "Video", in: persistentContainer.viewContext)!, insertInto: persistentContainer.viewContext)
             video.timestamp = NSDate()
-            video.encryption = json["encryption"]!.stringValue
-            video.url = json["url"]!.stringValue
-            video.key = json["key"]!.stringValue
+            
+            video.url = json["url"]! as? String
+            video.key = json["key"]! as? String
             video.cam = cam.0
             
-            cam.2 = Date().addingTimeInterval(TimeInterval(json["reconnectIn"]!.int16Value))
-        } catch {
-            print("Unable to read value.")
+            cam.2 = Date().addingTimeInterval(TimeInterval(json["reconnectIn"]!.int16Value / 1000))
+            
+            let index = currentCCs.index { $0.0.id == peripheral.identifier.uuidString }!
+            currentCCs[index] = cam
+            
+            saveContext()
+            
+            print("Read Key from (\(peripheral.name!)), reconnect at (\(cam.2))")
+        } catch let jsonError {
+            print("Unable to read value: \(jsonError)")
         }
+    }
+    
+    func startCollectingKeys() {
+        keyTimer = Timer(timeInterval: 1, repeats: true) { (timer) in
+            print("Collecting keys from (\(self.currentCCs.count)) cameras.")
+            for c in self.currentCCs {
+                if c.2 < Date() {
+                    self.centralManager?.connect(c.1, options: nil)
+                }
+            }
+        }
+        
+        RunLoop.main.add(keyTimer!, forMode: RunLoopMode.commonModes)
+    }
+    
+    func stopCollectingKeys() {
+        keyTimer?.invalidate()
     }
 }
 

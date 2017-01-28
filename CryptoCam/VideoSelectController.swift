@@ -59,7 +59,8 @@ class VideoSelectController: UITableViewController {
                 do {
                     SVProgressHUD.show(withStatus: "Decrypting File...")
                     let aes = try AES(key: (NSData(hexString: video.key!) as Data).bytes)
-                    let decrypted = try aes.decrypt(data!.bytes)
+                    let paddedBytes = PKCS7().add(to: data!.bytes, blockSize: AES.blockSize)
+                    let decrypted = try aes.decrypt(paddedBytes)
                     
                     let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(UUID().uuidString).h264")
                     try Data(bytes: decrypted).write(to: fileURL, options: .atomic)
@@ -67,18 +68,18 @@ class VideoSelectController: UITableViewController {
                     SVProgressHUD.dismiss()
                     self.lastFile = fileURL
                     self.performSegue(withIdentifier: "videoSegue", sender: self)
-                } catch {
-                    print("Unable to decrypt file")
+                } catch let aesError {
+                    print("Unable to decrypt file: \(aesError)")
                 }
             } else {
                 print("Error downloading file \(error)")
             }
-        }
+        }.resume()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier! == "videoSegue" {
-            var destination = segue.destination as! VideoController
+            let destination = segue.destination as! VideoController
             destination.path = lastFile
         }
     }

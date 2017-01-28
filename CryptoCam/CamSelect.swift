@@ -16,6 +16,19 @@ class CamSelectController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(refreshTable), for: .valueChanged)
+        
+        loadData()
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func loadData() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         do {
@@ -24,10 +37,11 @@ class CamSelectController: UITableViewController {
             print("Unable to load cams")
         }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func refreshTable() {
+        loadData()
+        tableView.reloadData()
+        refreshControl?.endRefreshing()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
