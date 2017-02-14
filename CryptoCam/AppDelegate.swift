@@ -10,6 +10,7 @@ import UIKit
 import CoreLocation
 import CoreBluetooth
 import CoreData
+import SVProgressHUD
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate, CBPeripheralManagerDelegate, CBPeripheralDelegate {
@@ -26,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        SVProgressHUD.setDefaultMaskType(.black)
         
         // Start Looking for Cameras
         centralManager = CBCentralManager(delegate: self, queue: nil)
@@ -147,7 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
                 cam.id = peripheral.identifier.uuidString
             }
         
-            currentCCs.append((cam!, peripheral, Date()))
+            currentCCs.append((cam!, peripheral, Date().addingTimeInterval(600)))
             central.connect(peripheral, options: nil)
         } catch let camError {
             print("Unable to create cam: \(camError)")
@@ -190,6 +193,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
             
             video.url = json["url"]! as? String
             video.key = json["key"]! as? String
+            video.iv = json["iv"]! as? String
             video.cam = cam.0
             
             cam.2 = Date().addingTimeInterval(TimeInterval(json["reconnectIn"]!.int16Value / 1000))
@@ -203,6 +207,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
         } catch let jsonError {
             print("Unable to read value: \(jsonError)")
         }
+        
+        //centralManager?.cancelPeripheralConnection(peripheral)
     }
     
     func startCollectingKeys() {
@@ -210,6 +216,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
             print("Collecting keys from (\(self.currentCCs.count)) cameras.")
             for c in self.currentCCs {
                 if c.2 < Date() {
+                    let index = self.currentCCs.index(where: { $0.0 == c.0 })!
+                    var cam = c
+                    cam.2 = Date().addingTimeInterval(600)
+                    self.currentCCs[index] = cam
                     self.centralManager?.connect(c.1, options: nil)
                 }
             }

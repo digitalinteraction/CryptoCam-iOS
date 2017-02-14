@@ -6,6 +6,7 @@
         <relationship name="videos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Video" inverseName="cam" inverseEntity="Video" syncable="YES"/>
     </entity>
     <entity name="Video" representedClassName="Video" syncable="YES" codeGenerationType="class">
+        <attribute name="iv" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
@@ -13,6 +14,6 @@
     </entity>
     <elements>
         <element name="Cam" positionX="-63" positionY="18" width="128" height="90"/>
-        <element name="Video" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="Video" positionX="-63" positionY="-18" width="128" height="120"/>
     </elements>
 </model>

@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Root View Controller-->
+        <!--CryptoCam-->
         <scene sceneID="sry-Ux-C9a">
             <objects>
                 <tableViewController id="s7u-c6-g3Y" customClass="CamSelectController" customModule="CryptoCam" customModuleProvider="target" sceneMemberID="viewController">
@@ -22,7 +22,7 @@
                             <outlet property="delegate" destination="s7u-c6-g3Y" id="UYc-hg-AeZ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="5ff-mT-Rh8"/>
+                    <navigationItem key="navigationItem" title="CryptoCam" id="5ff-mT-Rh8"/>
                     <connections>
                         <segue destination="z8H-Uq-dg9" kind="show" identifier="camSegue" id="ZBe-kS-BhA"/>
                     </connections>
@@ -64,9 +64,13 @@
         <scene sceneID="kUS-U7-dSt">
             <objects>
                 <navigationController id="GBm-gN-5lm" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="eFk-64-Nmo">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="eFk-64-Nmo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="s7u-c6-g3Y" kind="relationship" relationship="rootViewController" id="VeR-Hg-33D"/>
@@ -77,4 +81,5 @@
             <point key="canvasLocation" x="-854" y="490"/>
         </scene>
     </scenes>
+    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

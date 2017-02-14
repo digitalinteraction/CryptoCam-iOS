@@ -20,6 +20,10 @@ class VideoSelectController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(refreshTable), for: .valueChanged)
+        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         do {
@@ -34,6 +38,22 @@ class VideoSelectController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func loadData() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        do {
+            videos = try appDelegate.persistentContainer.viewContext.fetch(NSFetchRequest<Video>(entityName: "Video"))//.sorted(by: (v1, v2) => { v1.timestamp >= v2.timestamp })
+        } catch {
+            print("Unable to load cams")
+        }
+    }
+    
+    func refreshTable() {
+        loadData()
+        tableView.reloadData()
+        refreshControl?.endRefreshing()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -54,24 +74,39 @@ class VideoSelectController: UITableViewController {
         let video = videos[indexPath.row]
         SVProgressHUD.show(withStatus: "Downloading File...")
         URLSession.shared.dataTask(with: URL(string: video.url!)!) { (data, response, error) in
-            SVProgressHUD.dismiss()
+            DispatchQueue.main.async {
+                SVProgressHUD.dismiss()
+            }
             if (error == nil){
                 do {
                     SVProgressHUD.show(withStatus: "Decrypting File...")
-                    let aes = try AES(key: (NSData(hexString: video.key!) as Data).bytes)
+                    let aes = try AES(key: (NSData(hexString: video.key!) as Data).bytes, iv: (NSData(hexString: video.iv!) as Data).bytes)
                     let paddedBytes = PKCS7().add(to: data!.bytes, blockSize: AES.blockSize)
                     let decrypted = try aes.decrypt(paddedBytes)
                     
-                    let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(UUID().uuidString).h264")
+                    let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(UUID().uuidString).mp4")
                     try Data(bytes: decrypted).write(to: fileURL, options: .atomic)
                     
-                    SVProgressHUD.dismiss()
+                    
                     self.lastFile = fileURL
-                    self.performSegue(withIdentifier: "videoSegue", sender: self)
+                    DispatchQueue.main.async {
+                        SVProgressHUD.dismiss()
+                        self.performSegue(withIdentifier: "videoSegue", sender: self)
+                    }
                 } catch let aesError {
+                    DispatchQueue.main.async {
+                        SVProgressHUD.dismiss()
+                        print("AES Error: \(aesError)")
+                        self.present(UIAlertController(title: "Decryption Failed", message: "Error Decrypting File: \(aesError).", preferredStyle: .alert), animated: true, completion: nil)
+                    }
                     print("Unable to decrypt file: \(aesError)")
                 }
             } else {
+                DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
+                    print("AES Error: \(error)")
+                    self.present(UIAlertController(title: "Download Failed", message: "Error Downloading File: \(error).", preferredStyle: .alert), animated: true, completion: nil)
+                }
                 print("Error downloading file \(error)")
             }
         }.resume()
