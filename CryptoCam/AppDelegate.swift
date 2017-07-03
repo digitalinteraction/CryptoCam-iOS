@@ -133,7 +133,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        if peripheral.name != "OL-CryptoCam" { return }
+        guard let name = peripheral.name else {
+            return
+        }
+        
+        if name.characters.count != 7 { return }
+        
+        let index = name.index(name.startIndex, offsetBy: 3)
+        print(name.substring(to: index))
+        if name.substring(to: index) != "CC-" { return }
         
         let request = NSFetchRequest<Cam>(entityName: "Cam")
         request.predicate = NSPredicate(format: "id == %@", peripheral.identifier.uuidString)
@@ -146,7 +154,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
                 cam = cameras.first!
             } else {
                 cam = Cam(entity: NSEntityDescription.entity(forEntityName: "Cam", in: persistentContainer.viewContext)!, insertInto: persistentContainer.viewContext)
-                cam.name = peripheral.name!
+                cam.name = name
                 cam.id = peripheral.identifier.uuidString
             }
         

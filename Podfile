@@ -1,7 +1,7 @@
 use_frameworks!
+platform :ios, 10.0
 
 target 'CryptoCam' do
   pod 'SVProgressHUD', '~> 2.1'
-  pod 'CryptoSwift', '~> 0.6'
-  pod 'NSData+FastHex', '~> 1.0'
+  pod 'CommonCrypto', '~> 1.1'
 end

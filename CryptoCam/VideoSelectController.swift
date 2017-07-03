@@ -9,8 +9,6 @@
 import UIKit
 import CoreData
 import SVProgressHUD
-import CryptoSwift
-import NSData_FastHex
 
 class VideoSelectController: UITableViewController {
     var cam:Cam?
@@ -77,37 +75,42 @@ class VideoSelectController: UITableViewController {
             DispatchQueue.main.async {
                 SVProgressHUD.dismiss()
             }
-            if (error == nil){
-                do {
-                    SVProgressHUD.show(withStatus: "Decrypting File...")
-                    let aes = try AES(key: (NSData(hexString: video.key!) as Data).bytes, iv: (NSData(hexString: video.iv!) as Data).bytes)
-                    let paddedBytes = PKCS7().add(to: data!.bytes, blockSize: AES.blockSize)
-                    let decrypted = try aes.decrypt(paddedBytes)
-                    
-                    let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(UUID().uuidString).mp4")
-                    try Data(bytes: decrypted).write(to: fileURL, options: .atomic)
-                    
-                    
-                    self.lastFile = fileURL
-                    DispatchQueue.main.async {
-                        SVProgressHUD.dismiss()
-                        self.performSegue(withIdentifier: "videoSegue", sender: self)
-                    }
-                } catch let aesError {
-                    DispatchQueue.main.async {
-                        SVProgressHUD.dismiss()
-                        print("AES Error: \(aesError)")
-                        self.present(UIAlertController(title: "Decryption Failed", message: "Error Decrypting File: \(aesError).", preferredStyle: .alert), animated: true, completion: nil)
-                    }
-                    print("Unable to decrypt file: \(aesError)")
-                }
-            } else {
+            if let error = error {
                 DispatchQueue.main.async {
                     SVProgressHUD.dismiss()
                     print("AES Error: \(error)")
                     self.present(UIAlertController(title: "Download Failed", message: "Error Downloading File: \(error).", preferredStyle: .alert), animated: true, completion: nil)
                 }
                 print("Error downloading file \(error)")
+            } else {
+                SVProgressHUD.show(withStatus: "Decrypting File...")
+                let crypto = WebCrypto()
+                let key = video.key!
+                let iv = video.iv!
+                
+                crypto.decrypt(data: data!, key: key, iv: iv, callback: { (decrypted, aesError) in
+                    if let aesError = aesError {
+                        DispatchQueue.main.async {
+                            SVProgressHUD.dismiss()
+                            print("AES Error: \(aesError)")
+                            self.present(UIAlertController(title: "Decryption Failed", message: "Error Decrypting File: \(aesError).", preferredStyle: .alert), animated: true, completion: nil)
+                        }
+                        print("Unable to decrypt file: \(aesError)")
+                    } else {
+                        let fileURL = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]).appendingPathComponent("\(UUID().uuidString).mp4")
+                        do {
+                            try decrypted!.write(to: fileURL, options: .atomic)
+                            
+                            self.lastFile = fileURL
+                            DispatchQueue.main.async {
+                                SVProgressHUD.dismiss()
+                                self.performSegue(withIdentifier: "videoSegue", sender: self)
+                            }
+                        } catch {
+                            print("Unable to write to disk")
+                        }
+                    }
+                })
             }
         }.resume()
     }

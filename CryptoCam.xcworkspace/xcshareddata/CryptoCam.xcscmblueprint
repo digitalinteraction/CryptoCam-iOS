@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "B6D55A8AD089259EEA4FECDF23831C68A0E050B0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "B6D55A8AD089259EEA4FECDF23831C68A0E050B0" : 9223372036854775807,
+    "F8B997B702166FEFCE45C2523D618890BE64F5B9" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D2C6492F-B5D8-4D5E-9043-83295420369C",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "B6D55A8AD089259EEA4FECDF23831C68A0E050B0" : "iOS\/",
+    "F8B997B702166FEFCE45C2523D618890BE64F5B9" : "iOS\/WebCrypto.swift\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "CryptoCam",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "CryptoCam.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/openlab.ncl.ac.uk\/gitlab\/CryptoCam\/iOS",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B6D55A8AD089259EEA4FECDF23831C68A0E050B0"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/etienne-martin\/WebCrypto.swift",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F8B997B702166FEFCE45C2523D618890BE64F5B9"
+    }
+  ]
+}
