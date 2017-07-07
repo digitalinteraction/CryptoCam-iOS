@@ -10,7 +10,7 @@ import UIKit
 import AVKit
 import AVFoundation
 
-class VideoController: AVPlayerViewController {
+class VideoPlayerVC: AVPlayerViewController {
     var path:URL?
     
     override func viewDidAppear(_ animated: Bool) {

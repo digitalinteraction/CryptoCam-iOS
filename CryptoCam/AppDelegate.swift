@@ -140,7 +140,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
         if name.characters.count != 7 { return }
         
         let index = name.index(name.startIndex, offsetBy: 3)
-        print(name.substring(to: index))
         if name.substring(to: index) != "CC-" { return }
         
         let request = NSFetchRequest<Cam>(entityName: "Cam")
@@ -216,7 +215,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
             print("Unable to read value: \(jsonError)")
         }
         
-        //centralManager?.cancelPeripheralConnection(peripheral)
+        centralManager?.cancelPeripheralConnection(peripheral)
     }
     
     func startCollectingKeys() {

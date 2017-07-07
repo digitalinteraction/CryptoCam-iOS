@@ -1,70 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D17a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="GBm-gN-5lm">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="GBm-gN-5lm">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--CryptoCam-->
-        <scene sceneID="sry-Ux-C9a">
+        <scene sceneID="oHW-R9-7Ir">
             <objects>
-                <tableViewController id="s7u-c6-g3Y" customClass="CamSelectController" customModule="CryptoCam" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="n8x-qN-4SJ">
+                <collectionViewController id="qMd-We-fO6" customClass="CamSelectVC" customModule="CryptoCam" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="EnF-iD-eso">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ptk-4J-yiB">
+                            <size key="itemSize" width="164" height="214"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CamCard" id="fup-dk-wg4">
+                                <rect key="frame" x="0.0" y="0.0" width="164" height="214"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="164" height="214"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="k5a-ol-6iL">
+                                            <rect key="frame" x="0.0" y="0.0" width="164" height="120"/>
+                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="120" id="1mF-Za-TnG"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CAM NAME" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S98-oN-FIk">
+                                            <rect key="frame" x="38" y="131" width="89" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LOCATION" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nde-9H-Xuo">
+                                            <rect key="frame" x="41" y="181" width="83" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LAST SEEN" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X5B-DF-qIe">
+                                            <rect key="frame" x="38" y="156" width="88" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="k5a-ol-6iL" secondAttribute="trailing" id="17G-Lc-rFl"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="Nde-9H-Xuo" secondAttribute="bottom" constant="4" id="FEO-YP-Xme"/>
+                                    <constraint firstItem="S98-oN-FIk" firstAttribute="centerX" secondItem="fup-dk-wg4" secondAttribute="centerX" id="IPw-o0-KGx"/>
+                                    <constraint firstItem="k5a-ol-6iL" firstAttribute="leading" secondItem="fup-dk-wg4" secondAttribute="leading" id="QoT-gC-vRa"/>
+                                    <constraint firstItem="Nde-9H-Xuo" firstAttribute="centerX" secondItem="fup-dk-wg4" secondAttribute="centerX" id="Xvf-Ta-1ub"/>
+                                    <constraint firstItem="Nde-9H-Xuo" firstAttribute="top" secondItem="X5B-DF-qIe" secondAttribute="bottom" constant="4" id="b69-uQ-YBn"/>
+                                    <constraint firstItem="k5a-ol-6iL" firstAttribute="top" secondItem="fup-dk-wg4" secondAttribute="top" id="cxV-C1-2DA"/>
+                                    <constraint firstItem="X5B-DF-qIe" firstAttribute="top" secondItem="S98-oN-FIk" secondAttribute="bottom" constant="4" id="mqJ-EG-XPu"/>
+                                    <constraint firstItem="X5B-DF-qIe" firstAttribute="centerX" secondItem="fup-dk-wg4" secondAttribute="centerX" id="tF3-A9-oYE"/>
+                                </constraints>
+                            </collectionViewCell>
+                        </cells>
                         <connections>
-                            <outlet property="dataSource" destination="s7u-c6-g3Y" id="Ia1-4q-Fnt"/>
-                            <outlet property="delegate" destination="s7u-c6-g3Y" id="UYc-hg-AeZ"/>
+                            <outlet property="dataSource" destination="qMd-We-fO6" id="R2Z-Q3-4qB"/>
+                            <outlet property="delegate" destination="qMd-We-fO6" id="Mwx-ye-MTD"/>
                         </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="CryptoCam" id="5ff-mT-Rh8"/>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="CryptoCam" id="NxR-1v-iLE"/>
                     <connections>
-                        <segue destination="z8H-Uq-dg9" kind="show" identifier="camSegue" id="ZBe-kS-BhA"/>
+                        <segue destination="p1h-2N-UMq" kind="show" identifier="camSegue" id="7Sp-ef-cVH"/>
                     </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Xn0-ic-Bca" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RyY-4d-R8s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="38" y="490"/>
+            <point key="canvasLocation" x="73" y="490"/>
         </scene>
-        <!--Video Select Controller-->
-        <scene sceneID="XZe-BY-UEh">
+        <!--Video SelectVC-->
+        <scene sceneID="HMp-SJ-c50">
             <objects>
-                <tableViewController id="z8H-Uq-dg9" customClass="VideoSelectController" customModule="CryptoCam" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="geR-F4-i5q">
+                <collectionViewController id="p1h-2N-UMq" customClass="VideoSelectVC" customModule="CryptoCam" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="py6-NI-6PH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0dc-8K-422">
+                            <size key="itemSize" width="375" height="213"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VideoCard" id="EYz-KR-hP9">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="213"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="213"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Il0-BR-8xP">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="213"/>
+                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DATE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hmz-ai-bfs">
+                                            <rect key="frame" x="166.5" y="172.5" width="41.5" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Play" translatesAutoresizingMaskIntoConstraints="NO" id="ddl-9T-rFI">
+                                            <rect key="frame" x="167" y="86" width="40" height="40"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="40" id="7ld-0j-U3D"/>
+                                                <constraint firstAttribute="width" constant="40" id="qiv-9d-I95"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="bottomMargin" secondItem="Hmz-ai-bfs" secondAttribute="bottom" constant="12" id="58I-ZO-bJ6"/>
+                                    <constraint firstItem="ddl-9T-rFI" firstAttribute="centerX" secondItem="EYz-KR-hP9" secondAttribute="centerX" id="HtF-11-PE1"/>
+                                    <constraint firstItem="ddl-9T-rFI" firstAttribute="centerY" secondItem="EYz-KR-hP9" secondAttribute="centerY" id="MKQ-jn-CJE"/>
+                                    <constraint firstAttribute="bottom" secondItem="Il0-BR-8xP" secondAttribute="bottom" id="N50-k5-tFU"/>
+                                    <constraint firstItem="Il0-BR-8xP" firstAttribute="top" secondItem="EYz-KR-hP9" secondAttribute="top" id="p11-YD-hwk"/>
+                                    <constraint firstItem="Il0-BR-8xP" firstAttribute="leading" secondItem="EYz-KR-hP9" secondAttribute="leading" id="snz-ep-u0g"/>
+                                    <constraint firstItem="Hmz-ai-bfs" firstAttribute="centerX" secondItem="EYz-KR-hP9" secondAttribute="centerX" id="tVI-ZG-7kG"/>
+                                    <constraint firstAttribute="trailing" secondItem="Il0-BR-8xP" secondAttribute="trailing" id="yT2-G7-qa9"/>
+                                </constraints>
+                                <size key="customSize" width="375" height="213"/>
+                            </collectionViewCell>
+                        </cells>
                         <connections>
-                            <outlet property="dataSource" destination="z8H-Uq-dg9" id="Hbf-nc-AFm"/>
-                            <outlet property="delegate" destination="z8H-Uq-dg9" id="OYd-DX-c4y"/>
+                            <outlet property="dataSource" destination="p1h-2N-UMq" id="Swb-mC-XRe"/>
+                            <outlet property="delegate" destination="p1h-2N-UMq" id="8xg-sr-Ca8"/>
                         </connections>
-                    </tableView>
+                    </collectionView>
                     <connections>
-                        <segue destination="cZb-LZ-Aa6" kind="showDetail" identifier="videoSegue" action="showViewController:sender:" id="Raf-14-Tdk"/>
+                        <segue destination="s0K-Xa-FnT" kind="showDetail" identifier="videoSegue" id="oDH-Hu-Nxg"/>
                     </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pam-TS-UCa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qv1-OO-AuA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="924" y="490"/>
+            <point key="canvasLocation" x="948" y="490"/>
         </scene>
         <!--AV Player View Controller-->
-        <scene sceneID="IbI-dw-r0w">
+        <scene sceneID="gwE-d0-SjV">
             <objects>
-                <avPlayerViewController videoGravity="AVLayerVideoGravityResizeAspect" id="cZb-LZ-Aa6" customClass="VideoController" customModule="CryptoCam" customModuleProvider="target" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tx3-Li-CM5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <avPlayerViewController videoGravity="AVLayerVideoGravityResizeAspect" id="s0K-Xa-FnT" customClass="VideoPlayerVC" customModule="CryptoCam" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jxF-by-D5F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1826" y="490"/>
+            <point key="canvasLocation" x="1868" y="490"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kUS-U7-dSt">
             <objects>
                 <navigationController id="GBm-gN-5lm" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="eFk-64-Nmo">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="eFk-64-Nmo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -73,7 +174,7 @@
                         </textAttributes>
                     </navigationBar>
                     <connections>
-                        <segue destination="s7u-c6-g3Y" kind="relationship" relationship="rootViewController" id="VeR-Hg-33D"/>
+                        <segue destination="qMd-We-fO6" kind="relationship" relationship="rootViewController" id="LR3-oi-sLU"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6rk-Ty-DGK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -81,5 +182,8 @@
             <point key="canvasLocation" x="-854" y="490"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Play" width="24" height="24"/>
+    </resources>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>
