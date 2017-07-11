@@ -34,31 +34,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
         centralManager = CBCentralManager(delegate: self, queue: nil)
         peripheralManger = CBPeripheralManager(delegate: self, queue: nil)
         
+        application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
+        
         // Start Collecting Keys
         startCollectingKeys()
         return true
     }
-
-    func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-    }
-
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    }
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        checkAndUpdateCameras()
+        completionHandler(UIBackgroundFetchResult.newData)
+        print("PERFORMED BACKGROUND UPDATE")
     }
     
     // MARK: - Core Data stack
@@ -115,7 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
             break
         case .poweredOn:
             print("CoreBluetooth BLE hardware is powered on and ready")
-            central.scanForPeripherals(withServices: nil, options: nil)
+            central.scanForPeripherals(withServices: [AppDelegate.KeyCharacUuid], options: nil)
             break
         case .resetting:
             print("CoreBluetooth BLE hardware is resetting")
@@ -221,22 +207,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
     func startCollectingKeys() {
         keyTimer = Timer(timeInterval: 1, repeats: true) { (timer) in
             print("Collecting keys from (\(self.currentCCs.count)) cameras.")
-            for c in self.currentCCs {
-                if c.2 < Date() {
-                    let index = self.currentCCs.index(where: { $0.0 == c.0 })!
-                    var cam = c
-                    cam.2 = Date().addingTimeInterval(600)
-                    self.currentCCs[index] = cam
-                    self.centralManager?.connect(c.1, options: nil)
-                }
-            }
+            self.checkAndUpdateCameras()
         }
         
-        RunLoop.main.add(keyTimer!, forMode: RunLoopMode.commonModes)
+        RunLoop.current.add(keyTimer!, forMode: RunLoopMode.commonModes)
     }
     
     func stopCollectingKeys() {
         keyTimer?.invalidate()
+    }
+    
+    func checkAndUpdateCameras() {
+        for c in self.currentCCs {
+            if c.2 < Date() {
+                let index = self.currentCCs.index(where: { $0.0 == c.0 })!
+                var cam = c
+                cam.2 = Date().addingTimeInterval(600)
+                self.currentCCs[index] = cam
+                let peripherals = self.centralManager?.retrievePeripherals(withIdentifiers: [c.1.identifier])
+                if let peripherals = peripherals, peripherals.count > 0 {
+                    self.centralManager?.connect(peripherals.first!, options: nil)
+                }
+            }
+        }
     }
 }
 

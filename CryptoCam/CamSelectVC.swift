@@ -9,8 +9,9 @@
 import UIKit
 import CoreData
 import SDWebImage
+import NSDate_TimeAgo
 
-class CamSelectVC: UICollectionViewController {
+class CamSelectVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     private var cams = [Cam]()
     
     private var tappedCam:Cam?
@@ -18,6 +19,7 @@ class CamSelectVC: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        collectionView?.delegate = self
         collectionView?.alwaysBounceVertical = true
         let refresh = UIRefreshControl()
         refresh.addTarget(self, action: #selector(refreshCards), for: .valueChanged)
@@ -36,11 +38,19 @@ class CamSelectVC: UICollectionViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         
-        let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(camDataUpdated), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: context)
-        
         do {
             cams = try context.fetch(NSFetchRequest<Cam>(entityName: "Cam"))
+            
+            cams = cams.sorted(by: { (c1, c2) -> Bool in
+                if let c1l = retrieveLatestVideo(cam: c1) {
+                    if let c2l = retrieveLatestVideo(cam: c2) {
+                        return c1l.timestamp!.compare(c2l.timestamp! as Date).rawValue > 0
+                    } else {
+                        return true
+                    }
+                }
+                return false
+            })
         } catch {
             print("Unable to load cams")
         }
@@ -50,10 +60,6 @@ class CamSelectVC: UICollectionViewController {
         loadData()
         collectionView?.reloadData()
         collectionView?.refreshControl?.endRefreshing()
-    }
-    
-    func camDataUpdated() {
-        refreshCards()
     }
     
     func retrieveLatestVideo(cam: Cam) -> Video? {
@@ -72,6 +78,12 @@ class CamSelectVC: UICollectionViewController {
         return cams.count
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        let width = collectionView.layer.frame.size.width
+        let cellWidth = CGFloat(175.0)
+        return UIEdgeInsets(top: 10, left: (width - (cellWidth * 2)) / 4.0, bottom: 10, right: (width - (cellWidth * 2)) / 4.0)
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CamCard", for: indexPath)
         let cam = cams[indexPath.item]
@@ -80,6 +92,7 @@ class CamSelectVC: UICollectionViewController {
         let camNameLbl = cell.viewWithTag(2) as! UILabel
         let lastSeenLbl = cell.viewWithTag(3) as! UILabel
         let locationLbl = cell.viewWithTag(4) as! UILabel
+        let activity = cell.viewWithTag(5) as! UIActivityIndicatorView
         
         camNameLbl.text = cam.name
         
@@ -91,10 +104,17 @@ class CamSelectVC: UICollectionViewController {
         
         let thumbUrl = URL(string: videoThumb!.url!)!.appendingPathExtension("jpg")
         
+        lastThumbImage.image = nil
+        
+        DispatchQueue.main.async {
+            activity.startAnimating()
+        }
+        
         SDWebImageManager.shared().cachedImageExists(for: thumbUrl) { (exists) in
             if (exists) {
                 DispatchQueue.main.async {
                     lastThumbImage.sd_setImage(with: thumbUrl)
+                    activity.stopAnimating()
                 }
             } else {
                 print("Retrieving thumb: \(thumbUrl)")
@@ -109,7 +129,12 @@ class CamSelectVC: UICollectionViewController {
                             DispatchQueue.main.async {
                                 lastThumbImage.sd_setImage(with: thumbUrl)
                             }
+                        } else {
+                            
                         }
+                    }
+                    DispatchQueue.main.async {
+                        activity.stopAnimating()
                     }
                 }).resume()
             }
@@ -119,7 +144,7 @@ class CamSelectVC: UICollectionViewController {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        lastSeenLbl.text = formatter.string(from: videoThumb!.timestamp! as Date)
+        lastSeenLbl.text = videoThumb?.timestamp?.timeAgo()
         
         return cell
     }

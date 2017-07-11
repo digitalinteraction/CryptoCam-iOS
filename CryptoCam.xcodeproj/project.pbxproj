@@ -17,6 +17,7 @@
 		039B6AB01DC69CF000FFA35B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039B6AAE1DC69CF000FFA35B /* LaunchScreen.storyboard */; };
 		8F34664DBAD3BB70D86B40F4 /* Pods_CryptoCam.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE14C684A0F9589E3F500150 /* Pods_CryptoCam.framework */; };
 		D51951A11F0B898400CC1851 /* Cryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51951A01F0B898400CC1851 /* Cryptor.swift */; };
+		D51951A31F13B6F700CC1851 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51951A21F13B6F700CC1851 /* ViewExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		0BE6D7B306B48687E5D9DA45 /* Pods-CryptoCam.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptoCam.release.xcconfig"; path = "Pods/Target Support Files/Pods-CryptoCam/Pods-CryptoCam.release.xcconfig"; sourceTree = "<group>"; };
 		1958329F839AC03587CA11A8 /* Pods-CryptoCam.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptoCam.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CryptoCam/Pods-CryptoCam.debug.xcconfig"; sourceTree = "<group>"; };
 		D51951A01F0B898400CC1851 /* Cryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cryptor.swift; sourceTree = "<group>"; };
+		D51951A21F13B6F700CC1851 /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		DE14C684A0F9589E3F500150 /* Pods_CryptoCam.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CryptoCam.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -79,6 +81,7 @@
 				033540D01E3B8C5400947EC3 /* VideoSelectVC.swift */,
 				033540D21E3B8D0400947EC3 /* VideoPlayerVC.swift */,
 				D51951A01F0B898400CC1851 /* Cryptor.swift */,
+				D51951A21F13B6F700CC1851 /* ViewExtensions.swift */,
 			);
 			path = CryptoCam;
 			sourceTree = "<group>";
@@ -230,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				033540D31E3B8D0400947EC3 /* VideoPlayerVC.swift in Sources */,
+				D51951A31F13B6F700CC1851 /* ViewExtensions.swift in Sources */,
 				039B6AA81DC69CF000FFA35B /* CamSelectVC.swift in Sources */,
 				033540D11E3B8C5400947EC3 /* VideoSelectVC.swift in Sources */,
 				039B6AA61DC69CF000FFA35B /* AppDelegate.swift in Sources */,

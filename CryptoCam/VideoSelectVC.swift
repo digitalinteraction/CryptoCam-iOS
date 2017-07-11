@@ -11,7 +11,7 @@ import CoreData
 import SVProgressHUD
 import SDWebImage
 
-class VideoSelectVC: UICollectionViewController {
+class VideoSelectVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     var cam:Cam?
     var lastFile:URL?
     
@@ -20,6 +20,7 @@ class VideoSelectVC: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        collectionView?.delegate = self
         collectionView?.alwaysBounceVertical = true
         let refresh = UIRefreshControl()
         refresh.addTarget(self, action: #selector(refreshCards), for: .valueChanged)
@@ -65,19 +66,33 @@ class VideoSelectVC: UICollectionViewController {
         return videos.count
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VideoCard", for: indexPath)
         let video = videos[indexPath.item]
         
         let thumbImage = cell.viewWithTag(1) as! UIImageView
         let dateLbl = cell.viewWithTag(2) as! UILabel
+        let activity = cell.viewWithTag(3) as! UIActivityIndicatorView
+        let playBtn = cell.viewWithTag(4) as! UIButton
         
         let thumbUrl = URL(string: video.url!)!.appendingPathExtension("jpg")
+        
+        thumbImage.image = nil
+        
+        DispatchQueue.main.async {
+            activity.startAnimating()
+        }
         
         SDWebImageManager.shared().cachedImageExists(for: thumbUrl) { (exists) in
             if (exists) {
                 DispatchQueue.main.async {
                     thumbImage.sd_setImage(with: thumbUrl)
+                    activity.stopAnimating()
+                    playBtn.isHidden = false
                 }
             } else {
                 print("Retrieving thumb: \(thumbUrl)")
@@ -93,6 +108,10 @@ class VideoSelectVC: UICollectionViewController {
                                 thumbImage.sd_setImage(with: thumbUrl)
                             }
                         }
+                    }
+                    DispatchQueue.main.async {
+                        activity.stopAnimating()
+                        playBtn.isHidden = false
                     }
                 }).resume()
             }
