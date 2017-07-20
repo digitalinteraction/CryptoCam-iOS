@@ -14,8 +14,13 @@ import SVProgressHUD
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate, CBPeripheralManagerDelegate, CBPeripheralDelegate {
-    private static let KeyServiceUuid = CBUUID(string: "cc92cc92-ca19-0000-0000-000000000001")
-    private static let KeyCharacUuid = CBUUID(string: "cc92cc92-ca19-0000-0000-000000000002")
+    private static let CamServiceUuid = CBUUID(string: "cc92cc92-ca19-0000-0000-000000000000")
+    private static let CamVersionCharacUuid = CBUUID(string: "cc92cc92-ca19-0000-0000-000000000001")
+    private static let CamNameCharacUuid = CBUUID(string: "cc92cc92-ca19-0000-0000-000000000002")
+    private static let CamModeCharacUuid = CBUUID(string: "cc92cc92-ca19-0000-0000-000000000003")
+    private static let CamLocationCharacUuid = CBUUID(string: "cc92cc92-ca19-0000-0000-000000000004")
+    private static let KeyServiceUuid = CBUUID(string: "cc92cc92-ca19-0000-0000-000000000010")
+    private static let KeyCharacUuid = CBUUID(string: "cc92cc92-ca19-0000-0000-000000000011")
     
     private var centralManager:CBCentralManager?
     private var peripheralManger:CBPeripheralManager?
@@ -101,7 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
             break
         case .poweredOn:
             print("CoreBluetooth BLE hardware is powered on and ready")
-            central.scanForPeripherals(withServices: [AppDelegate.KeyCharacUuid], options: nil)
+            central.scanForPeripherals(withServices: [AppDelegate.KeyServiceUuid], options: nil)
             break
         case .resetting:
             print("CoreBluetooth BLE hardware is resetting")
@@ -152,7 +157,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         peripheral.delegate = self
-        peripheral.discoverServices([AppDelegate.KeyServiceUuid])
+        peripheral.discoverServices([AppDelegate.CamServiceUuid, AppDelegate.KeyServiceUuid])
     }
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
@@ -161,21 +166,96 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         if let services = peripheral.services {
-            let service = services.filter{ $0.uuid == AppDelegate.KeyServiceUuid }.first
+            let camService = services.filter{ $0.uuid == AppDelegate.CamServiceUuid }.first
+            let keyService = services.filter{ $0.uuid == AppDelegate.KeyServiceUuid }.first
             
-            if let keyService = service {
+            let index = currentCCs.index { $0.0.id == peripheral.identifier.uuidString }!
+            let cam = currentCCs[index]
+            
+            if let keyService = keyService {
                 peripheral.discoverCharacteristics([AppDelegate.KeyCharacUuid], for: keyService)
+            }
+            
+            if let camService = camService, cam.0.version?.isEmpty ?? true {
+                print("\(cam.0.name!): Reading Version")
+                cam.0.version = "READING"
+                peripheral.discoverCharacteristics([AppDelegate.CamVersionCharacUuid], for: camService)
+            }
+            
+            if let camService = camService, cam.0.name?.isEmpty ?? true {
+                print("\(cam.0.name!): Reading Name")
+                cam.0.name = "READING"
+                peripheral.discoverCharacteristics([AppDelegate.CamNameCharacUuid], for: camService)
+            }
+            
+            if let camService = camService, cam.0.mode?.isEmpty ?? true {
+                print("\(cam.0.name!): Reading Mode")
+                cam.0.mode = "READING"
+                peripheral.discoverCharacteristics([AppDelegate.CamModeCharacUuid], for: camService)
+            }
+            
+            if let camService = camService, cam.0.location?.isEmpty ?? true {
+                print("\(cam.0.name!): Reading Location")
+                cam.0.location = "READING"
+                peripheral.discoverCharacteristics([AppDelegate.CamLocationCharacUuid], for: camService)
             }
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        if let keyCharac = service.characteristics?.filter({$0.uuid == AppDelegate.KeyCharacUuid}).first {
-            peripheral.readValue(for: keyCharac)
+        if service.uuid == AppDelegate.KeyServiceUuid {
+            if let keyCharac = service.characteristics?.filter({$0.uuid == AppDelegate.KeyCharacUuid}).first {
+                peripheral.readValue(for: keyCharac)
+            }
+        } else if service.uuid == AppDelegate.CamServiceUuid {
+            if let versionCharac = service.characteristics?.filter({$0.uuid == AppDelegate.CamVersionCharacUuid}).first {
+                peripheral.readValue(for: versionCharac)
+            }
+            
+            if let nameCharac = service.characteristics?.filter({$0.uuid == AppDelegate.CamNameCharacUuid}).first {
+                peripheral.readValue(for: nameCharac)
+            }
+            
+            if let modeCharac = service.characteristics?.filter({$0.uuid == AppDelegate.CamModeCharacUuid}).first {
+                peripheral.readValue(for: modeCharac)
+            }
+            
+            if let locationCharac = service.characteristics?.filter({$0.uuid == AppDelegate.CamLocationCharacUuid}).first {
+                peripheral.readValue(for: locationCharac)
+            }
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        if let error = error {
+            print("Characteristic Read Error: \(error)")
+        } else {
+            let cam = currentCCs.filter{ $0.0.id == peripheral.identifier.uuidString }.first!
+            
+            switch characteristic.uuid {
+            case AppDelegate.KeyCharacUuid:
+                processNewKey(peripheral: peripheral, characteristic: characteristic)
+            case AppDelegate.CamVersionCharacUuid:
+                cam.0.version = String(data: characteristic.value!, encoding: .utf8)
+                print("\(cam.0.name!): Version \(cam.0.version!)")
+            case AppDelegate.CamNameCharacUuid:
+                cam.0.name = String(data: characteristic.value!, encoding: .utf8)
+                print("\(cam.0.name!): Friendly Name \(cam.0.friendlyName!)")
+            case AppDelegate.CamModeCharacUuid:
+                cam.0.mode = String(data: characteristic.value!, encoding: .utf8)
+                print("\(cam.0.name!): Mode \(cam.0.mode!)")
+            case AppDelegate.CamLocationCharacUuid:
+                cam.0.location = String(data: characteristic.value!, encoding: .utf8)
+                print("\(cam.0.name!): Location \(cam.0.location!)")
+            default:
+                break
+            }
+            
+            saveContext()
+        }
+    }
+    
+    func processNewKey(peripheral: CBPeripheral, characteristic: CBCharacteristic) {
         do {
             var cam = currentCCs.filter{ $0.0.id == peripheral.identifier.uuidString }.first!
             let data = characteristic.value!
@@ -194,14 +274,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
             let index = currentCCs.index { $0.0.id == peripheral.identifier.uuidString }!
             currentCCs[index] = cam
             
-            saveContext()
-            
             print("Read Key from (\(peripheral.name!)), reconnect at (\(cam.2))")
         } catch let jsonError {
             print("Unable to read value: \(jsonError)")
         }
-        
-        centralManager?.cancelPeripheralConnection(peripheral)
     }
     
     func startCollectingKeys() {

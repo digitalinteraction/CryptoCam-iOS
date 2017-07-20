@@ -94,7 +94,8 @@ class CamSelectVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         let locationLbl = cell.viewWithTag(4) as! UILabel
         let activity = cell.viewWithTag(5) as! UIActivityIndicatorView
         
-        camNameLbl.text = cam.name
+        camNameLbl.text = cam.friendlyName
+        locationLbl.text = cam.location
         
         let videoThumb = retrieveLatestVideo(cam: cam)
         

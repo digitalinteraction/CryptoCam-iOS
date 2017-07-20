@@ -26,7 +26,7 @@ class VideoSelectVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         refresh.addTarget(self, action: #selector(refreshCards), for: .valueChanged)
         collectionView?.refreshControl = refresh
         
-        navigationItem.title = cam?.name
+        navigationItem.title = cam?.friendlyName
         
         loadData()
     }
