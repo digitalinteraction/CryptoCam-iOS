@@ -11,6 +11,9 @@ import CoreLocation
 import CoreBluetooth
 import CoreData
 import SVProgressHUD
+import MobileCenter
+import MobileCenterAnalytics
+import MobileCenterCrashes
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate, CBPeripheralManagerDelegate, CBPeripheralDelegate {
@@ -32,6 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        MSMobileCenter.start("fb7c49c3-6498-4891-b1ac-324b55749cde", withServices:[
+            MSAnalytics.self,
+            MSCrashes.self
+        ])
         
         SVProgressHUD.setDefaultMaskType(.black)
         

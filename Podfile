@@ -6,4 +6,5 @@ target 'CryptoCam' do
   pod 'IDZSwiftCommonCrypto', '~> 0.9'
   pod 'SDWebImage', '~> 4.0.0'
   pod 'NSDate+TimeAgo', '~> 1.0'
+  pod 'MobileCenter'
 end
