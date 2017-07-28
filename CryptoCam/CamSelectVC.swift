@@ -67,6 +67,10 @@ class CamSelectVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
             return v1.timestamp!.compare(v2.timestamp! as Date).rawValue > 0
         })
         
+        if sorted.count > 1 {
+            return sorted[1]
+        }
+        
         return sorted.first
     }
     
@@ -131,7 +135,7 @@ class CamSelectVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
                                 lastThumbImage.sd_setImage(with: thumbUrl)
                             }
                         } else {
-                            
+                            collectionView.deleteItems(at: [indexPath])
                         }
                     }
                     DispatchQueue.main.async {

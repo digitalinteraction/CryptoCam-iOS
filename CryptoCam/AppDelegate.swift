@@ -182,9 +182,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
                 peripheral.discoverCharacteristics([AppDelegate.CamVersionCharacUuid], for: camService)
             }
             
-            if let camService = camService, cam.0.name?.isEmpty ?? true {
+            if let camService = camService, cam.0.friendlyName?.isEmpty ?? true {
                 print("\(cam.0.name!): Reading Name")
-                cam.0.name = "READING"
+                cam.0.friendlyName = "READING"
                 peripheral.discoverCharacteristics([AppDelegate.CamNameCharacUuid], for: camService)
             }
             
@@ -239,7 +239,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
                 cam.0.version = String(data: characteristic.value!, encoding: .utf8)
                 print("\(cam.0.name!): Version \(cam.0.version!)")
             case AppDelegate.CamNameCharacUuid:
-                cam.0.name = String(data: characteristic.value!, encoding: .utf8)
+                cam.0.friendlyName = String(data: characteristic.value!, encoding: .utf8)
                 print("\(cam.0.name!): Friendly Name \(cam.0.friendlyName!)")
             case AppDelegate.CamModeCharacUuid:
                 cam.0.mode = String(data: characteristic.value!, encoding: .utf8)
