@@ -183,49 +183,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
             
             if let camService = camService, cam.0.version?.isEmpty ?? true {
                 print("\(cam.0.name!): Reading Version")
-                cam.0.version = "READING"
                 peripheral.discoverCharacteristics([AppDelegate.CamVersionCharacUuid], for: camService)
             }
             
             if let camService = camService, cam.0.friendlyName?.isEmpty ?? true {
                 print("\(cam.0.name!): Reading Name")
-                cam.0.friendlyName = "READING"
                 peripheral.discoverCharacteristics([AppDelegate.CamNameCharacUuid], for: camService)
             }
             
             if let camService = camService, cam.0.mode?.isEmpty ?? true {
                 print("\(cam.0.name!): Reading Mode")
-                cam.0.mode = "READING"
                 peripheral.discoverCharacteristics([AppDelegate.CamModeCharacUuid], for: camService)
             }
             
             if let camService = camService, cam.0.location?.isEmpty ?? true {
                 print("\(cam.0.name!): Reading Location")
-                cam.0.location = "READING"
                 peripheral.discoverCharacteristics([AppDelegate.CamLocationCharacUuid], for: camService)
             }
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        let index = currentCCs.index { $0.0.id == peripheral.identifier.uuidString }!
+        let cam = currentCCs[index]
+        
         if service.uuid == AppDelegate.KeyServiceUuid {
             if let keyCharac = service.characteristics?.filter({$0.uuid == AppDelegate.KeyCharacUuid}).first {
                 peripheral.readValue(for: keyCharac)
             }
         } else if service.uuid == AppDelegate.CamServiceUuid {
-            if let versionCharac = service.characteristics?.filter({$0.uuid == AppDelegate.CamVersionCharacUuid}).first {
+            if let versionCharac = service.characteristics?.filter({$0.uuid == AppDelegate.CamVersionCharacUuid}).first, cam.0.version?.isEmpty ?? true {
                 peripheral.readValue(for: versionCharac)
             }
             
-            if let nameCharac = service.characteristics?.filter({$0.uuid == AppDelegate.CamNameCharacUuid}).first {
+            if let nameCharac = service.characteristics?.filter({$0.uuid == AppDelegate.CamNameCharacUuid}).first, cam.0.friendlyName?.isEmpty ?? true {
                 peripheral.readValue(for: nameCharac)
             }
             
-            if let modeCharac = service.characteristics?.filter({$0.uuid == AppDelegate.CamModeCharacUuid}).first {
+            if let modeCharac = service.characteristics?.filter({$0.uuid == AppDelegate.CamModeCharacUuid}).first, cam.0.mode?.isEmpty ?? true {
                 peripheral.readValue(for: modeCharac)
             }
             
-            if let locationCharac = service.characteristics?.filter({$0.uuid == AppDelegate.CamLocationCharacUuid}).first {
+            if let locationCharac = service.characteristics?.filter({$0.uuid == AppDelegate.CamLocationCharacUuid}).first, cam.0.location?.isEmpty ?? true {
                 peripheral.readValue(for: locationCharac)
             }
         }
@@ -242,16 +241,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
                 processNewKey(peripheral: peripheral, characteristic: characteristic)
             case AppDelegate.CamVersionCharacUuid:
                 cam.0.version = String(data: characteristic.value!, encoding: .utf8)
-                print("\(cam.0.name!): Version \(cam.0.version!)")
+                print("\(cam.0.name!): Version - \(cam.0.version!)")
             case AppDelegate.CamNameCharacUuid:
                 cam.0.friendlyName = String(data: characteristic.value!, encoding: .utf8)
-                print("\(cam.0.name!): Friendly Name \(cam.0.friendlyName!)")
+                print("\(cam.0.name!): Friendly Name - \(cam.0.friendlyName!)")
             case AppDelegate.CamModeCharacUuid:
                 cam.0.mode = String(data: characteristic.value!, encoding: .utf8)
-                print("\(cam.0.name!): Mode \(cam.0.mode!)")
+                print("\(cam.0.name!): Mode - \(cam.0.mode!)")
             case AppDelegate.CamLocationCharacUuid:
                 cam.0.location = String(data: characteristic.value!, encoding: .utf8)
-                print("\(cam.0.name!): Location \(cam.0.location!)")
+                print("\(cam.0.name!): Location - \(cam.0.location!)")
             default:
                 break
             }

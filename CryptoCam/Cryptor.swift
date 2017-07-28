@@ -14,26 +14,30 @@ class Cryptor {
         let key = video.key!
         let iv = video.iv!
         let url = URL(string: video.url!)!.appendingPathExtension("mp4")
+        let fileUrl = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(url.lastPathComponent)
         
         print("Downloading file: \(url)")
         
-        retrieveFile(url: url) { (data, error) in
-            if let error = error {
-                callback(nil, error)
-            } else if let data = data {
-                print("Decrypting \(data.count) bytes...")
-                let decrypted = decryptBytes(key: key.hexa2Bytes, iv: iv.hexa2Bytes, data: data)
-                let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(url.lastPathComponent)
-                
-                print("Decrypted \(data.count).")
-                
-                do {
-                    print("Writing to file: \(fileURL)")
-                    try decrypted?.write(to: fileURL)
-                    print("Completed.")
-                    callback(fileURL, error)
-                } catch {
+        if FileManager.default.fileExists(atPath: fileUrl.path) {
+            callback(fileUrl, nil)
+        } else {
+            retrieveFile(url: url) { (data, error) in
+                if let error = error {
                     callback(nil, error)
+                } else if let data = data {
+                    print("Decrypting \(data.count) bytes...")
+                    let decrypted = decryptBytes(key: key.hexa2Bytes, iv: iv.hexa2Bytes, data: data)
+                    
+                    print("Decrypted \(data.count).")
+                    
+                    do {
+                        print("Writing to file: \(fileUrl)")
+                        try decrypted?.write(to: fileUrl)
+                        print("Completed.")
+                        callback(fileUrl, error)
+                    } catch {
+                        callback(nil, error)
+                    }
                 }
             }
         }
@@ -43,19 +47,23 @@ class Cryptor {
         let key = video.key!
         let iv = video.iv!
         let url = URL(string: video.url!)!.appendingPathExtension("jpg")
+        let fileUrl = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(url.lastPathComponent)
         
-        retrieveFile(url: url) { (data, error) in
-            if let error = error {
-                callback(nil, error)
-            } else if let data = data {
-                let decrypted = decryptBytes(key: key.hexa2Bytes, iv: iv.hexa2Bytes, data: data)
-                let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(url.lastPathComponent)
-                
-                do {
-                    try decrypted?.write(to: fileURL)
-                    callback(fileURL, error)
-                } catch {
+        if FileManager.default.fileExists(atPath: fileUrl.path) {
+            callback(fileUrl, nil)
+        } else {
+            retrieveFile(url: url) { (data, error) in
+                if let error = error {
                     callback(nil, error)
+                } else if let data = data {
+                    let decrypted = decryptBytes(key: key.hexa2Bytes, iv: iv.hexa2Bytes, data: data)
+                    
+                    do {
+                        try decrypted?.write(to: fileUrl)
+                        callback(fileUrl, error)
+                    } catch {
+                        callback(nil, error)
+                    }
                 }
             }
         }

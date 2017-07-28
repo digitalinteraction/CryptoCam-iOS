@@ -12,6 +12,7 @@ import SDWebImage
 import NSDate_TimeAgo
 
 class CamSelectVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+    @IBOutlet weak var placeholderLbl: UILabel!
     private var cams = [Cam]()
     
     private var tappedCam:Cam?
@@ -51,6 +52,12 @@ class CamSelectVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
                 }
                 return false
             })
+            
+            if cams.count > 0 {
+                placeholderLbl.isHidden = true
+            } else {
+                placeholderLbl.isHidden = false
+            }
         } catch {
             print("Unable to load cams")
         }
