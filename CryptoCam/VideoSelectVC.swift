@@ -107,8 +107,6 @@ class VideoSelectVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                             DispatchQueue.main.async {
                                 thumbImage.sd_setImage(with: thumbUrl)
                             }
-                        } else {
-                            collectionView.deleteItems(at: [indexPath])
                         }
                     }
                     DispatchQueue.main.async {

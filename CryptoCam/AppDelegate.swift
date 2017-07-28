@@ -10,7 +10,6 @@ import UIKit
 import CoreLocation
 import CoreBluetooth
 import CoreData
-import SVProgressHUD
 import MobileCenter
 import MobileCenterAnalytics
 import MobileCenterCrashes
@@ -40,8 +39,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CBCentralManagerDelegate,
             MSAnalytics.self,
             MSCrashes.self
         ])
-        
-        SVProgressHUD.setDefaultMaskType(.black)
         
         // Start Looking for Cameras
         centralManager = CBCentralManager(delegate: self, queue: nil)

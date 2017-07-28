@@ -15,11 +15,11 @@ PODS:
   - SVProgressHUD (2.1.2)
 
 DEPENDENCIES:
-  - IDZSwiftCommonCrypto (~> 0.9)
+  - IDZSwiftCommonCrypto
   - MobileCenter
-  - NSDate+TimeAgo (~> 1.0)
-  - SDWebImage (~> 4.0.0)
-  - SVProgressHUD (~> 2.1)
+  - NSDate+TimeAgo
+  - SDWebImage
+  - SVProgressHUD
 
 SPEC CHECKSUMS:
   IDZSwiftCommonCrypto: 671867eabeeee3a2c2395c2152fe3d4349ffc062
@@ -28,6 +28,6 @@ SPEC CHECKSUMS:
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
 
-PODFILE CHECKSUM: 62983d0a6ec77b6144f9674c1e2727bbb28a7608
+PODFILE CHECKSUM: b42174a3a7f68d9940e094facd143b3b1bf137b1
 
 COCOAPODS: 1.2.1

@@ -134,8 +134,6 @@ class CamSelectVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
                             DispatchQueue.main.async {
                                 lastThumbImage.sd_setImage(with: thumbUrl)
                             }
-                        } else {
-                            collectionView.deleteItems(at: [indexPath])
                         }
                     }
                     DispatchQueue.main.async {

@@ -89,7 +89,6 @@ class Cryptor {
                 callback(data, nil)
             }
         }.resume()
-
     }
 }
 
